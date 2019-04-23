@@ -32,7 +32,11 @@ while first <= last:
         
         # Get the PDF title
         myPDF = open(str(first) + ".pdf", 'rb')
-        title = PdfReader(myPDF).Info.Title.strip('()')
+        title = ''
+        try:
+            title = PdfReader(myPDF).Info.Title.strip('()')
+        except:
+            print("### The document TR-" + str(first) + " needs to be removed from the catalogue ###")
         myPDF.close()
 
         print("### The document TR-" + str(first) + " needs to be included in the catalogue ###")
