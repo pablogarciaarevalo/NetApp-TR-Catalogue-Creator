@@ -14,6 +14,8 @@ currentTRs = catalogue.xpath('//a[@class="TR-url"]/text()')
 first = 3000
 last = 4900
 
+print ("")
+
 while first <= last:
     # Requesting the document from the public website
     varUrl = "http://www.netapp.com/us/media/tr-" + str(first) + ".pdf"
@@ -22,31 +24,37 @@ while first <= last:
     # Check if the document is already in the catalogue
     varTR = "TR-" + str(first)
     matching = [s for s in currentTRs if varTR in s]
+    
+    currentTitle = ''
 
-    # If the document has been published but it's not included in the catalogue
-    if (r.status_code == 200) and len(matching) == 0:
+    # If the document is currently public
+    if (r.status_code == 200):
+
+        # If it is not included in the catalogue
+        if len(matching) == 0:
         
-        # Download the document
-        with open(str(first) + ".pdf", "wb") as pdf:
-            pdf.write(r.content)
-        
-        # Get the PDF title
-        myPDF = open(str(first) + ".pdf", 'rb')
-        title = ''
-        try:
-            title = PdfReader(myPDF).Info.Title.strip('()')
-        except:
-            print("### The document TR-" + str(first) + " needs to be removed from the catalogue ###")
-        myPDF.close()
+            # Download the document
+            with open(str(first) + ".pdf", "wb") as pdf:
+                pdf.write(r.content)
+            
+            # Get the title from the PDF file
+            myPDF = open(str(first) + ".pdf", 'rb')
+            try:
+                currentTitle = PdfReader(myPDF).Info.Title.strip('()')
+            except:
+                pass
 
-        print("### The document TR-" + str(first) + " needs to be included in the catalogue ###")
-        print('<a href="http://www.netapp.com/us/media/tr-' + str(first) + '.pdf" class="TR-url" target="_blank">TR-' + str(first) + ': ' + title + '</a><br />')
+            myPDF.close()
 
-        # Remove the local file
-        os.remove(str(first) + '.pdf')
+            # Remove the local document
+            os.remove(str(first) + '.pdf')
 
-    # If the document is not public anymore but it's included in the catalogue
-    elif (r.status_code != 200) and len(matching) != 0:
-        print("### The document TR-" + str(first) + " needs to be removed from the catalogue ###")
+        # If it is included in the catalogue
+        if len(matching) != 0:
+            
+            # Get the title form the catalogue
+            currentTitle = ''.join(matching)
+
+        print('<a href="http://www.netapp.com/us/media/tr-' + str(first) + '.pdf" class="TR-url" target="_blank">' + currentTitle + '</a><br />')
 
     first = first + 1
