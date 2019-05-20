@@ -12,7 +12,7 @@ catalogue = html.fromstring(siteCatalogue.content)
 currentTRs = catalogue.xpath('//a[@class="TR-url"]/text()')
 
 # The below list includes IDs which have URL redirection and prevent the proper operation
-blacklist = [3533,3442]
+blacklist = [3369, 3533,3442]
 
 first = 3000
 last = 4900
