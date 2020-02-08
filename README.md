@@ -10,9 +10,9 @@ This script index the NetApp Technical Reports which has been published and crea
 The below python libraries are required
 
 ```
-pip install lxml
-pip install requests
-pip install pdfrw
+pip3 install lxml
+pip3 install requests
+pip3 install pdfrw
 ```
 
 ## Running
