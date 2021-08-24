@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 from lxml import html
 import requests
@@ -12,7 +14,7 @@ catalogue = html.fromstring(siteCatalogue.content)
 currentTRs = catalogue.xpath('//a[@class="TR-url"]/text()')
 
 # The below list includes IDs which have URL redirection and prevent the proper operation
-blacklist = [3369, 3533,3442]
+blacklist = [3071,3369,3533,3442,3982,4335,4336, 4386, 4394,4443,4446,4478,4511,4542,4817,4830]
 
 first = 3000
 last = 4900
@@ -37,8 +39,8 @@ while first <= last:
         if (r.status_code == 200):
 
             # Check if the requested http object is a PDF file
-            isPDFfile = (r.headers['content-type']=='application/pdf')
-            if isPDFfile:
+            #isPDFfile = (r.headers['content-type']=='application/pdf')
+            #if isPDFfile:
 
                 # If it is not included in the catalogue
                 if len(matching) == 0:
